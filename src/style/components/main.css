@@ -1,0 +1,75 @@
+.main {
+    background-color: var(--color-grey);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    
+    padding: 20px;
+    gap: 10px;
+}
+
+.main-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main-info__title {
+    color: var(--color-white);
+}
+
+.total__dishes {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    padding: 5px 10px;
+}
+
+.food-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.food-list__item {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+}
+
+.food-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+}
+
+.food-card__button-delete {
+    border: none;
+    color: var(--color-white);
+    border-radius: 50%;
+    background-color: var(--color-red);
+    width: 30px;
+    height: 30px;
+    
+}
+
+.food-card__delete-img {
+    object-fit: cover;
+    color: white;
+    filter: invert(1)
+    
+}
+
+.food-card__description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.food-card__PFC {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--color-grey);
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>AI Food Tracker</title>
+</head>
+<body>
+    <div class="content container">
+        <header class="header">
+            <div class="calories">
+                <div class="calories__eaten">
+                    <p class="calories__value"><span data-js-statistics-calories-eaten>0</span></p>
+                    <p class="calories__label">Callories</p>
+                </div>
+                <div class="calories__remain">
+                    <p class="calories__value"><span data-js-statistics-calories-remain>2000</span></p>
+                    <p class="calories__label">Осталось</p>
+                </div>
+                <div class="calories__normal">
+                    <p class="calories__value"><span data-js-statistics-calories-normal>2000</span></p>
+                    <p class="calories__label">Норма</p>
+                </div>
+            </div>
+
+            <div class="PFC">
+                <div class="PFC__proteins">
+                    <p class="calories__value">белки</p>
+                    <p class="calories__label"><span data-js-statistics-proteins-now>0</span>/<span data-js-statistics-proteins-normal>100</span> г</p>
+                </div>
+                <div class="PFC__fats">
+                    <p class="calories__value">жиры</p>
+                    <p class="calories__label"><span data-js-statistics-fats-now>0</span>/<span data-js-statistics-fats-normal>50</span> г</p>
+                </div>
+                <div class="PFC__carbohydrates">
+                    <p class="calories__value">углеводы</p>
+                    <p class="calories__label"><span data-js-statistics-carbohydrates-now>0</span>/<span data-js-statistics-carbohydrates-normal>70</span> г</p>
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="main-info">
+                <p class="main-info__title">Съедено сегодня</p>
+                <div class="total__dishes">
+                    <p>Съедено блюд: <span data-js-total-eaten-foods>0</span></p>
+                </div>
+            </div>
+
+            <ul class="food-list">
+                <li class="food-list__item">
+                    <article class="food-card">
+                        <p class="food-card__photo">Фото</p>
+                        <p class="food-card__title">Название блюда</p>
+                        <div class="food-card__description">
+                            <p class="food-card__calories">~<span data-js-dishes-calories>152</span> ккал</p>
+                            <div class="food-card__PFC">
+                                <p class="food-card__proteins"><span data-js-dishes-proteins>12</span> б</p>
+                                <p class="food-card__fats"><span data-js-dishes-fats>14</span> ж</p>
+                                <p class="food-card__carbohydrates"><span data-js-dishes-carbohydrates>7</span> у</p>
+                            </div>
+                        </div>
+                        <button class="food-card__button-delete">
+                            <img class="food-card__delete-img" src="assets/png-icons/delete-card__icon.png" alt="delete-card__icon">
+                        </button>
+                    </article>
+                </li>
+
+                
+            </ul>
+            
+        </main>
+
+    <footer class="footer">
+        <label for="photoInput" class="upload-btn">Выбрать фото</label>
+        <input type="file" accept="image/*" id="photoInput">
+    </footer>
+        
+    </div>
+
+    
+
+    <script src="script.js" defer></script>
+</body>
+</html>

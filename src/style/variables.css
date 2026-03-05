@@ -1,0 +1,10 @@
+:root {
+    --color-blue: rgb(93, 152, 255) ;
+    --color-white: #ffffff;
+    --color-grey: grey;
+    --color-bright-grey: rgb(231, 231, 231);
+    --color-red: rgb(255, 86, 86);
+
+    --border-radius: 20px;
+    
+}

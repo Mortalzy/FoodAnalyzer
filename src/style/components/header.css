@@ -1,0 +1,83 @@
+
+
+.header {
+    background-color: var(--color-blue);
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--border-radius);
+    color: var(--color-bright-grey);
+    padding: 20px;
+    row-gap: 24px;
+    
+}
+
+.calories {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.calories__eaten {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.calories__value {
+    margin: 0;
+}
+
+.calories__label {
+    margin: 0;
+}
+
+.calories__remain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.calories__normal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.PFC {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.PFC__proteins {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+
+
+.PFC__fats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.PFC__carbohydrates {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}

@@ -1,0 +1,8 @@
+@import '/src/style/font.css';
+@import '/src/style/globals.css';
+@import '/src/style/normalize.css';
+@import '/src/style/variables.css';
+
+@import '/src/style/components/footer.css';
+@import '/src/style/components/header.css';
+@import '/src/style/components/main.css';
