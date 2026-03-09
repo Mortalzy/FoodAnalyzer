@@ -1,23 +1,79 @@
-selectors = {
-    1: '[data-js-statistics-calories-eaten]',
-    2: '[data-js-statistics-calories-remain]',
-    3: '[data-js-statistics-calories-normal]',
+class FoodAnalyzer {
+    selectors = {
+        statisticsCaloriesEaten: '[data-js-statistics-calories-eaten]',
+        statisticsCaloriesRemain: '[data-js-statistics-calories-remain]',
+        statisticsCaloriesNormal: '[data-js-statistics-calories-normal]',
 
-    4: '[data-js-statistics-proteins-now]',
-    5: '[data-js-statistics-proteins-normal]',
+        statisticsProteinsNow: '[data-js-statistics-proteins-now]',
+        statisticsProteinsNormal: '[data-js-statistics-proteins-normal]',
 
-    6: '[data-js-statistics-fats-now]',
-    7: '[data-js-statistics-fats-normal]',
+        statisticsFatsNow: '[data-js-statistics-fats-now]',
+        statisticsFatsNormal: '[data-js-statistics-fats-normal]',
 
-    8: '[data-js-statistics-carbohydrates-now]',
-    9: '[data-js-statistics-carbohydrates-normal]',
+        statisticsCarbohydratesNow: '[data-js-statistics-carbohydrates-now]',
+        statisticsCarbohydratesNormal: '[data-js-statistics-carbohydrates-normal]',
 
-    10: '[data-js-total-eaten-foods]',
+        totalEatenFood: '[data-js-total-eaten-foods]',
 
-    11: '[data-js-dishes-calories]',
-    12: '[data-js-dishes-proteins]',
-    13: '[data-js-dishes-fats]',
-    14: '[data-js-dishes-carbohydrates]',
+        dishesCalories: '[data-js-dishes-calories]',
+        dishesProteins: '[data-js-dishes-proteins]',
+        dishesFats: '[data-js-dishes-fats]',
+        dishesCarbohydrates: '[data-js-dishes-carbohydrates]',
+    }
+
+    constructor() {
+        this.statisticsCaloriesEatenElement = document.querySelector(this.selectors.statisticsCaloriesEaten)
+        this.statisticsCaloriesRemainElement = document.querySelector(this.selectors.statisticsCaloriesRemain)
+        this.statisticsCaloriesNormalElement = document.querySelector(this.selectors.statisticsCaloriesNormal)
+        
+        this.statisticsProteinsNowElement = document.querySelector(this.selectors.statisticsProteinsNow)
+        this.statisticsProteinsNormalElement = document.querySelector(this.selectors.statisticsProteinsNormal)
+        
+        this.statisticsFatsNowElement = document.querySelector(this.selectors.statisticsFatsNow)
+        this.statisticsFatsNormalElement = document.querySelector(this.selectors.statisticsFatsNormal)
+        
+        this.statisticsCarbohydratesNowElement = document.querySelector(this.selectors.statisticsCarbohydratesNow)
+        this.statisticsCarbohydratesNormalElement = document.querySelector(this.selectors.statisticsCarbohydratesNormal)
+        
+        this.totalEatenFoodElement = document.querySelector(this.selectors.totalEatenFood)
+        
+        this.dishesCaloriesElement = document.querySelector(this.selectors.dishesCalories)
+        this.dishesProteinsElement = document.querySelector(this.selectors.dishesProteins)
+        this.dishesFatsElement = document.querySelector(this.selectors.dishesFats)
+        this.dishesCarbohydratesElement = document.querySelector(this.selectors.dishesCarbohydrates)
+
+        this.items = []
+    }
+
+        
+
+        
+  
+
+    
+
+    render() {
+
+    }
+
+    savePhotoToDir() {
+
+    }
+
+    saveToLocalStorage() {
+
+    }
+
+    loadFromLocalStorage() {
+
+    }
+
+    BindEvents() {
+
+    }
 }
+
+new FoodAnalyzer()
+
 
 

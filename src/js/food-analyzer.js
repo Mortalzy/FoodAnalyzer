@@ -1,10 +1,11 @@
 // food-analyzer-openrouter.js
 const fs = require('fs');
+const path = require('path')
 
 
 // Конфигурация
 const OPENROUTER_CONFIG = {
-  apiKey: "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",
+  apiKey: "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",
   baseURL: "https://openrouter.ai/api/v1/chat/completions",
 };
 
@@ -36,6 +37,7 @@ async function analyzeFoodImage(imagePath, userComment = null) {
     // Конвертируем изображение в base64
     const imageBuffer = fs.readFileSync(imagePath);
     const base64Image = imageBuffer.toString('base64');
+    
     
     // Формируем базовый запрос
     let analysisPrompt = `Ты — профессиональный диетолог. Проанализируй это блюдо и верни ТОЛЬКО JSON.
@@ -134,10 +136,14 @@ async function analyzeFoodImage(imagePath, userComment = null) {
  * Примеры использования с разными комментариями
  */
 async function main() {
-  const foodPhoto = "./Pelmeni.jpg";
+
+  console.log(__dirname)
+  const rootDir = path.dirname(__dirname)
+  const photoPath = path.join(rootDir, 'food-photos', 'Pelmeni.jpg')
+  console.log(photoPath)
   
-  if (!fs.existsSync(foodPhoto)) {
-    console.log(`❌ Файл ${foodPhoto} не найден. Положите фото в папку с программой.`);
+  if (!fs.existsSync(photoPath)) {
+    console.log(`❌ Файл ${photoPath} не найден. Положите фото в папку с программой.`);
     return;
   }
   
@@ -146,14 +152,14 @@ async function main() {
     console.log("=".repeat(50));
     console.log("📝 ПРИМЕР 1: Базовый анализ");
     console.log("=".repeat(50));
-    await analyzeFoodImage(foodPhoto);
+    await analyzeFoodImage(photoPath);
     
     // Пример 2: С комментарием про диету
     console.log("\n" + "=".repeat(50));
     console.log("📝 ПРИМЕР 2: С комментарием про диету");
     console.log("=".repeat(50));
     await analyzeFoodImage(
-      foodPhoto, 
+      photoPath, 
       "Я на кето-диете, оцени содержание углеводов особенно внимательно"
     );
     
@@ -162,7 +168,7 @@ async function main() {
     console.log("📝 ПРИМЕР 3: С комментарием про размер порции");
     console.log("=".repeat(50));
     await analyzeFoodImage(
-      foodPhoto, 
+      photoPath, 
       "Это маленькая порция, примерно 200 грамм, скорректируй расчёты"
     );
     
@@ -171,7 +177,7 @@ async function main() {
     console.log("📝 ПРИМЕР 4: С комментарием про способ приготовления");
     console.log("=".repeat(50));
     await analyzeFoodImage(
-      foodPhoto, 
+      photoPath, 
       "Пельмени варёные, сметана 15% жирности, 2 столовые ложки"
     );
     
