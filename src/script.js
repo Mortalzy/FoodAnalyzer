@@ -19,6 +19,8 @@ class FoodAnalyzer {
         dishesProteins: '[data-js-dishes-proteins]',
         dishesFats: '[data-js-dishes-fats]',
         dishesCarbohydrates: '[data-js-dishes-carbohydrates]',
+
+        addPhotoInput: '[data-js-add-photo-input]'
     }
 
     constructor() {
@@ -42,15 +44,77 @@ class FoodAnalyzer {
         this.dishesFatsElement = document.querySelector(this.selectors.dishesFats)
         this.dishesCarbohydratesElement = document.querySelector(this.selectors.dishesCarbohydrates)
 
+        this.addPhotoInputElement = document.querySelector(this.selectors.addPhotoInput)
+
         this.items = []
+
+        this.dailyNorm = {
+            calories: 2000,
+            proteins: 100,
+            fats: 70,
+            carbs: 250,
+        }
+
+        this.ApiUrl = ''
+
+        this.loadFromLocalStorage()
+
+        this.render()
+
+        this.BindEvents()
     }
 
-        
+    async analyzeFood(image64Base) {
+        const response = await fetch(`${this.ApiUrl}/analyze`, {
+            method: 'POST',
+            body: JSON.stringify({image: image64Base})
+        })
+        return response.json()
+    }
 
-        
-  
+    async getPhoto() {
+        this.addPhotoInputElement.addEventListener('change', async (e) => {
+            const selectedFile = e.target.files;
 
+            if(selectedFile.length > 0) {
+                const [imageFile] = selectedFile
+
+                const isImageType = imageFile.type.startsWith('image')
+
+                if(isImageType) {
+
+                    try {
+                        const image64Base = await this.getImage64Buffer(imageFile)
+
+                        const analysisResult = await this.analyzeFood(image64Base)
+
+                        console.log(analysisResult);
+                        
+
+
+                    }
+                    catch(error) {
+                        console.error(error)
+                    }
+                }
+
+            }
+        })
+
+    }
     
+    getImage64Buffer(imageFile) {
+        return new Promise((resolve) => {
+            const fileReader = new FileReader()
+            let image64Buffer
+
+            fileReader.onload(() => {
+                image64Buffer = fileReader.result
+                resolve(image64Buffer)
+            })
+            fileReader.readAsDataURL(imageFile)
+        })
+    }
 
     render() {
 

@@ -22,10 +22,10 @@ function extractJSON(content) {
 
 /**
  * Анализ фото еды с опциональным комментарием
- * @param {string} imagePath - путь к файлу изображения
+ * @param {string} image64Buffer - Фото в формате Buffer64 
  * @param {string} userComment - опциональный комментарий для уточнения запроса
  */
-async function analyzeFoodImage(imagePath, userComment = null) {
+async function analyzeFoodImage(image64Buffer, userComment = null) {
   try {
     console.log("📸 Анализирую фото еды...");
     console.log("🔄 Использую модель: google/gemma-3-4b-it:free");
@@ -33,12 +33,7 @@ async function analyzeFoodImage(imagePath, userComment = null) {
     if (userComment) {
       console.log(`💬 Комментарий пользователя: "${userComment}"`);
     }
-    
-    // Конвертируем изображение в base64
-    const imageBuffer = fs.readFileSync(imagePath);
-    const base64Image = imageBuffer.toString('base64');
-    
-    
+  
     // Формируем базовый запрос
     let analysisPrompt = `Ты — профессиональный диетолог. Проанализируй это блюдо и верни ТОЛЬКО JSON.
     
@@ -78,7 +73,7 @@ async function analyzeFoodImage(imagePath, userComment = null) {
               {
                 type: "image_url",
                 image_url: {
-                  url: `data:image/jpeg;base64,${base64Image}`
+                  url: `data:image/jpeg;base64,${image64Buffer}`
                 }
               }
             ]

@@ -20,13 +20,32 @@
 }
 
 .navigation-menu__statistic {
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .navigation-menu__add-photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.navigation-menu__add-photo-image {
+    width: 24px;
+    height: 24px;
 }
 
 .navigation-menu__user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.add-photo__label {
+    cursor: pointer;
+}
+
+.add-photo__input {
+    display: none;
 }

@@ -75,28 +75,41 @@
         <footer class="footer">
             <nav class="navigation-menu">
                 <div class="navigation-menu__statistic navigation-menu__element">
-                    <img class="statistic-button__image" src="" alt="statistic-button">
+                    <img class="statistic-button__image" 
+                    src="assets/png-icons/nav-menu__stats.png" 
+                    alt="statistic-button">
                 </div>
 
                 <div class="navigation-menu__add-photo navigation-menu__element">
-                    <!-- <label for="photoInput" class="upload-btn">Выбрать фото</label>
-                    <input type="file" accept="image/*" id="photoInput"> -->
-                    <img class="navigation-menu__add-photo-image navigation-menu__element" src="" alt="add-photo-image">
+                    <label for="file" class="add-photo__label">
+                        <input 
+                        type="file" 
+                        id="file" 
+                        accept="image/*"
+                        class="add-photo__input"
+                        data-js-add-photo-input>
+
+                        <img class="navigation-menu__add-photo-image navigation-menu__element" 
+                        src="assets/png-icons/nav-menu__add-photo.png" 
+                        alt="add-photo-image">
+                    </label>
+                    
                 </div>
 
                 <div class="navigation-menu__user navigation-menu__element">
-                    <img class="navigation-menu__user-image" src="" alt="user-image"></img>
+                    <img class="navigation-menu__user-image" 
+                    src="assets/png-icons/nav-menu__user.png" 
+                    alt="user-image"></img>
                 </div>
             </nav>
-            
 
-            
-            
         </footer>
+
+    
 </div>
 
     
 
-    <script src="script.js" defer></script>
+    <script type="module" src="script.js" defer></script>
 </body>
 </html>
