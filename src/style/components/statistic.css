@@ -1,6 +1,4 @@
-
-
-.header {
+.statistic {
     background-color: var(--color-blue);
     display: flex;
     flex-direction: column;

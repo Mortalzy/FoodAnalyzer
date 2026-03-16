@@ -3,6 +3,7 @@
 @import '/src/style/normalize.css';
 @import '/src/style/variables.css';
 
-@import '/src/style/components/footer.css';
-@import '/src/style/components/header.css';
-@import '/src/style/components/main.css';
+@import '/src/style/components/cards-section.css';
+@import '/src/style/components/food-card.css';
+@import '/src/style/components/navigation.css';
+@import '/src/style/components/statistic.css';
