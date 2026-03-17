@@ -2,19 +2,29 @@ body {
     display: flex;
     background-color: var(--color-white);
     justify-content: center;
-    align-items: start;
+    align-items: center;
     font-family: 'Inter', sans-serif;
+    font-weight: bold;
     min-height: 100vh;
     padding: 10px;
 }
 
 .container {
-    min-width: 600px;
-    height: 100vh;
+    width: 478px;
+    height: 900px;
+    display: flex;
 }
 
 .content {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    flex-grow: 1;
 }
+
+.iphone-frame {
+    border: 12px solid black;
+    border-radius: 40px;
+    padding: 10px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}   

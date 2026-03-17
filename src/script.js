@@ -59,7 +59,7 @@ class FoodAnalyzer {
 
         // OpenRouter конфигурация
         this.openRouterConfig = {
-            apiKey: "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",
+            apiKey: "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",
             baseURL: "https://openrouter.ai/api/v1/chat/completions",
         }
 
@@ -368,6 +368,8 @@ class FoodAnalyzer {
 
     render() {
         this.updateStatistics();
+
+        this.totalEatenFoodElement.textContent = this.items.length
         
         if (this.foodList) {
             if (this.items.length > 0) {
@@ -397,7 +399,7 @@ class FoodAnalyzer {
                                 </div>
                             </div>
                             <button class="food-card__button-delete" onclick="foodAnalyzer.deleteItem(${item.id})">
-                                <img class="food-card__delete-img" src="assets/png-icons/delete-card__icon.png" alt="delete-card__icon">
+                                <img class="food-card__delete-img" src="assets/png-icons/delete-card__icon.svg" alt="delete-card__icon">
                             </button>
                         </article>
                     </li>

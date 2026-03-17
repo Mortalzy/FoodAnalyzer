@@ -7,8 +7,9 @@
     <title>AI Food Tracker</title>
 </head>
 <body>
-    <div class="content container">
-        <section class="statistic">
+    <div class="container">
+        <div class="iphone-frame content">
+            <section class="statistic">
             <div class="calories">
                 <div class="calories__eaten">
                     <p class="calories__value"><span data-js-statistics-calories-eaten>0</span></p>
@@ -16,25 +17,25 @@
                 </div>
                 <div class="calories__remain">
                     <p class="calories__value"><span data-js-statistics-calories-remain>2000</span></p>
-                    <p class="calories__label">Осталось</p>
+                    <p class="calories__label">Remain</p>
                 </div>
                 <div class="calories__normal">
                     <p class="calories__value"><span data-js-statistics-calories-normal>2000</span></p>
-                    <p class="calories__label">Норма</p>
+                    <p class="calories__label">Normal</p>
                 </div>
             </div>
 
             <div class="PFC">
                 <div class="PFC__proteins">
-                    <p class="calories__value">белки</p>
+                    <p class="calories__value">proteins</p>
                     <p class="calories__label"><span data-js-statistics-proteins-now>0</span>/<span data-js-statistics-proteins-normal>100</span> г</p>
                 </div>
                 <div class="PFC__fats">
-                    <p class="calories__value">жиры</p>
+                    <p class="calories__value">fats</p>
                     <p class="calories__label"><span data-js-statistics-fats-now>0</span>/<span data-js-statistics-fats-normal>50</span> г</p>
                 </div>
                 <div class="PFC__carbohydrates">
-                    <p class="calories__value">углеводы</p>
+                    <p class="calories__value">carbs</p>
                     <p class="calories__label"><span data-js-statistics-carbohydrates-now>0</span>/<span data-js-statistics-carbohydrates-normal>70</span> г</p>
                 </div>
             </div>
@@ -42,9 +43,9 @@
 
         <section class="cards-section">
             <div class="main-info">
-                <p class="main-info__title">Съедено сегодня</p>
+                <p class="main-info__title">Your food-cards</p>
                 <div class="total__dishes">
-                    <p>Съедено блюд: <span data-js-total-eaten-foods>0</span></p>
+                    <p>Eaten dishes: <span data-js-total-eaten-foods>0</span></p>
                 </div>
             </div>
             <ul class="food-list" data-js-food-list></ul>     
@@ -54,7 +55,7 @@
             <nav class="navigation-menu">
                 <div class="navigation-menu__statistic navigation-menu__element">
                     <img class="statistic-button__image" 
-                    src="assets/png-icons/nav-menu__stats.png" 
+                    src="assets/png-icons/nav-menu__stats.svg" 
                     alt="statistic-button">
                 </div>
 
@@ -68,7 +69,7 @@
                         data-js-add-photo-input>
 
                         <img class="navigation-menu__add-photo-image navigation-menu__element" 
-                        src="assets/png-icons/nav-menu__add-photo.png" 
+                        src="assets/png-icons/nav-menu__add-photo.svg" 
                         alt="add-photo-image">
                     </label>
                     
@@ -76,14 +77,12 @@
 
                 <div class="navigation-menu__user navigation-menu__element">
                     <img class="navigation-menu__user-image" 
-                    src="assets/png-icons/nav-menu__user.png" 
+                    src="assets/png-icons/nav-menu__user.svg" 
                     alt="user-image"></img>
                 </div>
             </nav>
-
-        </footer>
-
-    
+        </section>
+    </div>
 </div>
 
     
