@@ -1,19 +1,15 @@
 .statistic {
     background-color: var(--color-blue);
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+
     border-radius: var(--border-radius);
     color: var(--color-white);
     padding: 20px;
     row-gap: 24px;
     
-}
-
-.calories {
-    display: flex;
-    justify-content: space-between;
-    font-size: 20px;
-    font-weight: 600;
 }
 
 .calories__eaten {
