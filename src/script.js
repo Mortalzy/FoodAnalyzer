@@ -59,7 +59,7 @@ class FoodAnalyzer {
 
         // OpenRouter конфигурация
         this.openRouterConfig = {
-            apiKey: "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",
+            apiKey: "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",
             baseURL: "https://openrouter.ai/api/v1/chat/completions",
         }
 
