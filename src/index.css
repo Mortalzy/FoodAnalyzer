@@ -2,6 +2,7 @@
 @import '/src/style/globals.css';
 @import '/src/style/normalize.css';
 @import '/src/style/variables.css';
+@import '/src/style/animations.css';
 
 @import '/src/style/components/cards-section.css';
 @import '/src/style/components/food-card.css';

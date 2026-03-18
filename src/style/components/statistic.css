@@ -1,14 +1,15 @@
 .statistic {
-    background-color: var(--color-blue);
     display: grid;
-    
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
 
     border-radius: var(--border-radius);
+    background-color: var(--color-blue);
     color: var(--color-white);
     padding: 20px;
     row-gap: 24px;
+
+    font-size: 18px;
     
 }
 
@@ -16,7 +17,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    max-width: max-content;
+    transition: all 0.3s;
+
+    &:hover {
+        transform: translateX(7px) scale(1.05);
+    }
 }
 
 .calories__value {
@@ -31,15 +37,23 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    
+    transition: all 0.3s;
+
+    &:hover {
+        transform: translateX(7px) scale(1.05);
+    }
 }
 
 .calories__normal {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-self: end;
+    transition: all 0.3s;
+
+    &:hover {
+        transform: translateX(7px) scale(1.05);
+    }
     
 }
 
@@ -54,7 +68,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; 
+    max-width: max-content;
+    transition: all 0.3s;
+
+    &:hover {
+        transform: translateX(7px) scale(1.05);
+    }
 }
 
 
@@ -64,11 +83,21 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s;
+
+    &:hover {
+        transform: translateX(7px) scale(1.05);
+    }
 }
 
 .PFC__carbohydrates {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-self: end;
+    transition: all 0.3s;
+
+    &:hover {
+        transform: translateX(7px) scale(1.05);
+    }
 }

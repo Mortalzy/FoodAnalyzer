@@ -15,14 +15,16 @@
 }
 
 .food-card {
-    display: flex;
+    display: grid;
     align-items: center;
-    justify-content: space-between;
+    grid-template-columns: 20% 1fr 8%;
     padding: 5px 10px;
 }
 
 .food-card__photo-img {
     border-radius: var(--border-radius);
+    width: 80px;
+    height: 50px;
 }
 
 .food-card__button-delete {

@@ -59,7 +59,7 @@ class FoodAnalyzer {
 
         // OpenRouter конфигурация
         this.openRouterConfig = {
-            apiKey: "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",
+            apiKey: "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",
             baseURL: "https://openrouter.ai/api/v1/chat/completions",
         }
 
@@ -76,6 +76,7 @@ class FoodAnalyzer {
             console.log("📸 Анализирую фото еды...");
             
             const prompt = `Ты — профессиональный диетолог. Проанализируй это блюдо и верни ТОЛЬКО JSON.
+            (Длина названия блюда не должна превышать 25 символов. Можешь использовать сокращения где это уместно)
             
             ВАЖНО: Верни ТОЛЬКО чистый JSON без markdown-разметки, без пояснений, без \`\`\`json.
             
@@ -310,17 +311,26 @@ class FoodAnalyzer {
         this.items.push({
             ...analysis,
             date: new Date().toISOString(),
-            id: Date.now()
+            id: Date.now(),
+            isNew: true,
         });
         this.saveToLocalStorage();
         this.render();
     }
 
     deleteItem(id) {
-        this.items = this.items.filter(item => item.id !== id);
-        this.saveToLocalStorage();
-        this.render();
+    const element = document.querySelector(`[data-id="${id}"]`);
+    
+    if (element) {
+        element.classList.add('food-list__item--removing');
+
+        setTimeout(() => {
+            this.items = this.items.filter(item => item.id !== id);
+            this.saveToLocalStorage();
+            this.render();
+        }, 250); // должно совпадать с CSS
     }
+}
 
     updateStatistics() {
         const totals = this.items.reduce((acc, item) => {
@@ -382,14 +392,14 @@ class FoodAnalyzer {
                         : '<div class="food-card__photo-placeholder">📸</div>';
                     
                     return `
-                    <li class="food-list__item" data-id="${item.id}">
+                    <li class="food-list__item ${item.isNew ? 'food-list__item--new' : ''}" data-id="${item.id}">
                         <article class="food-card">
                             <div class="food-card__photo">
                                 ${photoHTML}
                             </div>
                             <div class="food-card__content">
-                                <p class="food-card__title">${item.dish_name || 'Блюдо'}</p>
                                 <div class="food-card__description">
+                                    <p class="food-card__title">${item.dish_name || 'Блюдо'}</p>
                                     <p class="food-card__calories">~<span class="food-card__calories-value">${Math.round(item.calories || 0)}</span> ккал</p>
                                     <div class="food-card__PFC">
                                         <p class="food-card__proteins"><span class="food-card__proteins-value">${Math.round(item.protein_g || 0)}</span> б</p>
