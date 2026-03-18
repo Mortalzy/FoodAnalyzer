@@ -26,7 +26,7 @@
 
 ## 🖼️ Скриншоты
 
-![Скриншот приложения](.src/assets/screenshot.jpg)
+![Скриншот приложения](./src/assets/screenshot.jpg)
 
 ---
 
