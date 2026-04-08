@@ -35,3 +35,17 @@
 1. Клонируйте репозиторий:
 ```bash
 git clone https://github.com/username/food-analyzer.git
+```
+
+2.1. Зарегистрируйтесь и войдите в OpenRouter:
+```bash
+https://openrouter.ai
+```
+2.2. Создайте собственный API KEY и вставьте его в **script.js** :
+```bash
+this.openRouterConfig = {
+            apiKey: "YOUR_API_KEY",
+            ...
+        
+```
+2.3. Сохраните код и запустите приложение
