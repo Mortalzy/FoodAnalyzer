@@ -1,7 +1,6 @@
 .statistic {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
 
     border-radius: var(--border-radius);
     background-color: var(--color-blue);
@@ -13,26 +12,6 @@
     
 }
 
-.calories__eaten {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: max-content;
-    transition: all 0.3s;
-
-    &:hover {
-        transform: translateX(7px) scale(1.05);
-    }
-}
-
-.calories__value {
-    margin: 0;
-}
-
-.calories__label {
-    margin: 0;
-}
-
 .calories__remain {
     display: flex;
     flex-direction: column;
@@ -42,19 +21,6 @@
     &:hover {
         transform: translateX(7px) scale(1.05);
     }
-}
-
-.calories__normal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-self: end;
-    transition: all 0.3s;
-
-    &:hover {
-        transform: translateX(7px) scale(1.05);
-    }
-    
 }
 
 .PFC {

@@ -21,7 +21,10 @@ class FoodAnalyzer {
         dishesFats: '[data-js-dishes-fats]',
         dishesCarbohydrates: '[data-js-dishes-carbohydrates]',
 
-        addPhotoInput: '[data-js-add-photo-input]'
+        addPhotoInput: '[data-js-add-photo-input]',
+
+        progressRing: '[data-js-progress-ring]',
+        progressPercent: '[data-js-progress-percent]',
     }
 
     constructor() {
@@ -48,6 +51,9 @@ class FoodAnalyzer {
 
         this.addPhotoInputElement = document.querySelector(this.selectors.addPhotoInput)
 
+        this.progressRingElement = document.querySelector(this.selectors.progressRing)
+        this.progressPercentElement = document.querySelector(this.selectors.progressPercent)
+
         this.items = []
 
         this.dailyNorm = {
@@ -59,7 +65,7 @@ class FoodAnalyzer {
 
         // OpenRouter конфигурация
         this.openRouterConfig = {
-            apiKey: "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",
+            apiKey: "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",
             baseURL: "https://openrouter.ai/api/v1/chat/completions",
         }
 
@@ -332,6 +338,29 @@ class FoodAnalyzer {
     }
 }
 
+    updateProgressRing(eatenCalories) {
+        if (!this.progressRingElement || !this.progressPercentElement) return;
+
+        const radius = 70;
+        const circumference = 2 * Math.PI * radius;
+
+        const progress = Math.min(eatenCalories / this.dailyNorm.calories, 1);
+        const percent = Math.round(progress * 100);
+
+        this.progressRingElement.style.strokeDasharray = circumference;
+        this.progressRingElement.style.strokeDashoffset = circumference * (1 - progress);
+
+        this.progressPercentElement.textContent = `${percent}%`;
+
+        if (progress < 0.5) {
+            this.progressRingElement.style.stroke = '#8fdda2';
+        } else if (progress < 0.85) {
+            this.progressRingElement.style.stroke = '#fffd7b';
+        } else {
+            this.progressRingElement.style.stroke = '#fca590';
+        }
+}
+
     updateStatistics() {
         const totals = this.items.reduce((acc, item) => {
             acc.calories += item.calories || 0;
@@ -374,6 +403,8 @@ class FoodAnalyzer {
         if (this.statisticsCarbohydratesNormalElement) {
             this.statisticsCarbohydratesNormalElement.textContent = this.dailyNorm.carbs;
         }
+
+        this.updateProgressRing(totals.calories);
     }
 
     render() {
