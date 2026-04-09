@@ -25,6 +25,8 @@ class FoodAnalyzer {
 
         progressRing: '[data-js-progress-ring]',
         progressPercent: '[data-js-progress-percent]',
+
+        loader: '[data-js-loader]',
     }
 
     constructor() {
@@ -54,6 +56,8 @@ class FoodAnalyzer {
         this.progressRingElement = document.querySelector(this.selectors.progressRing)
         this.progressPercentElement = document.querySelector(this.selectors.progressPercent)
 
+        this.loaderElement = document.querySelector(this.selectors.loader)
+
         this.items = []
 
         this.dailyNorm = {
@@ -65,7 +69,7 @@ class FoodAnalyzer {
 
         // OpenRouter конфигурация
         this.openRouterConfig = {
-            apiKey: "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",
+            apiKey: "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",
             baseURL: "https://openrouter.ai/api/v1/chat/completions",
         }
 
@@ -285,31 +289,14 @@ class FoodAnalyzer {
     }
 
     showLoadingIndicator() {
-        let loader = document.querySelector('.food-analyzer-loader');
-        if (!loader) {
-            loader = document.createElement('div');
-            loader.className = 'food-analyzer-loader';
-            loader.innerHTML = 'Анализируем фото... 📸';
-            loader.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                padding: 20px;
-                background: rgba(0,0,0,0.8);
-                color: white;
-                border-radius: 10px;
-                z-index: 9999;
-            `;
-            document.body.appendChild(loader);
+    if (this.loaderElement) {
+        this.loaderElement.style.display = 'flex';
         }
-        loader.style.display = 'block';
-    }
+    }   
 
     hideLoadingIndicator() {
-        const loader = document.querySelector('.food-analyzer-loader');
-        if (loader) {
-            loader.style.display = 'none';
+        if (this.loaderElement) {
+            this.loaderElement.style.display = 'none';
         }
     }
 
