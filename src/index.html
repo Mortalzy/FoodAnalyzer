@@ -75,7 +75,7 @@
         <section class="navigation">
             <nav class="navigation-menu">
                 <div class="navigation-menu__statistic navigation-menu__element">
-                    <button class="navigation-button">
+                    <button class="navigation-button" data-js-profile-open-button>
                         <img
                         class="statistic-button__image"
                         src="assets/png-icons/nav-menu__stats.svg" 
@@ -86,16 +86,6 @@
                 </div>
 
                 <div class="navigation-menu__add-photo navigation-menu__element">
-                    <!-- <label for="file" class="add-photo__image">
-                            <input 
-                            type="file" 
-                            id="file" 
-                            accept="image/*"
-                            class="add-photo__input"
-                            data-js-add-photo-input>
-
-                        
-                    </label> -->
                     <button
                     class="navigation-button"
                     data-js-add-photo-form-page-button
@@ -170,6 +160,44 @@
             </div>
         </div>
 
+        <div class="profile-page" data-js-profile-page>
+            <div class="profile-page__card">
+                <h2 class="profile-page__title">Ваши параметры</h2>
+
+                <div class="profile-page__field">
+                    <label class="profile-page__label" for="gender">Пол</label>
+                    <select class="profile-page__select" id="gender" data-js-profile-gender>
+                        <option value="male">Мужчина</option>
+                        <option value="female">Женщина</option>
+                    </select>
+                </div>
+
+                <div class="profile-page__field">
+                    <label class="profile-page__label" for="age">Возраст</label>
+                    <input class="profile-page__input" id="age" type="number" min="1" placeholder="Например: 20" data-js-profile-age>
+                </div>
+
+                <div class="profile-page__field">
+                    <label class="profile-page__label" for="height">Рост (см)</label>
+                    <input class="profile-page__input" id="height" type="number" min="1" placeholder="Например: 180" data-js-profile-height>
+                </div>
+
+                <div class="profile-page__field">
+                    <label class="profile-page__label" for="weight">Вес (кг)</label>
+                    <input class="profile-page__input" id="weight" type="number" min="1" placeholder="Например: 75" data-js-profile-weight>
+                </div>
+
+                <div class="profile-page__buttons">
+                    <button class="profile-page__button profile-page__button--save" type="button" data-js-profile-save-button>
+                        Сохранить
+                    </button>
+                    <button class="profile-page__button profile-page__button--cancel" type="button" data-js-profile-cancel-button>
+                        Отмена
+                    </button>
+                </div>
+            </div>
+        </div>
+
         
 
     </div>
@@ -178,6 +206,6 @@
 
 
 
-    <script type="module" src="script.js" defer></script>
+    <script type="module" src="./js/index.js" defer></script>
 </body>
 </html>

@@ -1,44 +1,12 @@
-class FoodAnalyzer {
-    selectors = {
-        statisticsCaloriesEaten: '[data-js-statistics-calories-eaten]',
-        statisticsCaloriesRemain: '[data-js-statistics-calories-remain]',
-        statisticsCaloriesNormal: '[data-js-statistics-calories-normal]',
+import { selectors, defaultDailyNorm, defaultUserProfile, openRouterConfig } from './constants.js';
+import { calculateDailyNorm, generateId } from './helpers.js';
+import { saveFoodItems, loadFoodItems, saveUserProfile, loadUserProfile } from './storage.js';
+import { analyzeFoodRequest } from './api.js';
 
-        statisticsProteinsNow: '[data-js-statistics-proteins-now]',
-        statisticsProteinsNormal: '[data-js-statistics-proteins-normal]',
-
-        statisticsFatsNow: '[data-js-statistics-fats-now]',
-        statisticsFatsNormal: '[data-js-statistics-fats-normal]',
-
-        statisticsCarbohydratesNow: '[data-js-statistics-carbohydrates-now]',
-        statisticsCarbohydratesNormal: '[data-js-statistics-carbohydrates-normal]',
-
-        totalEatenFood: '[data-js-total-eaten-foods]',
-        foodList: '[data-js-food-list]',
-
-        dishesCalories: '[data-js-dishes-calories]',
-        dishesProteins: '[data-js-dishes-proteins]',
-        dishesFats: '[data-js-dishes-fats]',
-        dishesCarbohydrates: '[data-js-dishes-carbohydrates]',
-
-        addPhotoInput: '[data-js-add-photo-input]',
-
-        progressRing: '[data-js-progress-ring]',
-        progressPercent: '[data-js-progress-percent]',
-
-        loader: '[data-js-loader]',
-
-        deleteAllButton: '[data-js-delete-all-button]',
-
-        addPhotoFormPage: '[data-js-add-photo-page]',
-        addPhotoFormPageButton: '[data-js-add-photo-form-page-button]',
-        addPhotoButton: '[data-js-add-photo-button]',
-        uploadedPhoto: '[data-js-uploaded-photo]',
-        photoPlaceholder: '[data-js-photo-placeholder]',
-        addPhotoNote: '[data-js-add-photo-note]',
-    }
-
+export class FoodAnalyzer {
     constructor() {
+        this.selectors = selectors;
+
         this.statisticsCaloriesEatenElement = document.querySelector(this.selectors.statisticsCaloriesEaten);
         this.statisticsCaloriesRemainElement = document.querySelector(this.selectors.statisticsCaloriesRemain);
         this.statisticsCaloriesNormalElement = document.querySelector(this.selectors.statisticsCaloriesNormal);
@@ -75,25 +43,24 @@ class FoodAnalyzer {
         this.photoPlaceholderElement = document.querySelector(this.selectors.photoPlaceholder);
         this.addPhotoNoteElement = document.querySelector(this.selectors.addPhotoNote);
 
+        this.profilePageElement = document.querySelector(this.selectors.profilePage);
+        this.profileOpenButtonElement = document.querySelector(this.selectors.profileOpenButton);
+        this.profileGenderElement = document.querySelector(this.selectors.profileGender);
+        this.profileAgeElement = document.querySelector(this.selectors.profileAge);
+        this.profileHeightElement = document.querySelector(this.selectors.profileHeight);
+        this.profileWeightElement = document.querySelector(this.selectors.profileWeight);
+        this.profileSaveButtonElement = document.querySelector(this.selectors.profileSaveButton);
+        this.profileCancelButtonElement = document.querySelector(this.selectors.profileCancelButton);
+
         this.selectedImageFile = null;
         this.selectedImageBase64 = '';
         this.selectedThumbnail = '';
 
-        this.items = [];
+        this.items = loadFoodItems();
+        this.userProfile = loadUserProfile(defaultUserProfile);
+        this.dailyNorm = calculateDailyNorm(this.userProfile);
+        this.openRouterConfig = openRouterConfig;
 
-        this.dailyNorm = {
-            calories: 2000,
-            proteins: 100,
-            fats: 70,
-            carbs: 250,
-        };
-
-        this.openRouterConfig = {
-            apiKey: "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",
-            baseURL: "https://openrouter.ai/api/v1/chat/completions",
-        };
-
-        this.loadFromLocalStorage();
         this.render();
         this.bindEvents();
 
@@ -101,95 +68,7 @@ class FoodAnalyzer {
     }
 
     async analyzeFood(imageBase64) {
-        try {
-            console.log("📸 Анализирую фото еды...");
-
-            const prompt = `Ты — профессиональный диетолог. Проанализируй это блюдо и верни ТОЛЬКО JSON.
-(Длина названия блюда не должна превышать 25 символов. Можешь использовать сокращения где это уместно)
-
-ВАЖНО: Верни ТОЛЬКО чистый JSON без markdown-разметки, без пояснений, без \`\`\`json.
-
-{
-  "dish_name": "название на русском",
-  "weight_g": число,
-  "calories": число,
-  "protein_g": число,
-  "fat_g": число,
-  "carbs_g": число,
-  "confidence": "high/medium/low"
-}`;
-
-            const response = await fetch(this.openRouterConfig.baseURL, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${this.openRouterConfig.apiKey}`,
-                    "Content-Type": "application/json",
-                    "HTTP-Referer": window.location.origin,
-                    "X-Title": "Food Analyzer"
-                },
-                body: JSON.stringify({
-                    model: "google/gemma-3-4b-it:free",
-                    messages: [
-                        {
-                            role: "user",
-                            content: [
-                                {
-                                    type: "text",
-                                    text: prompt
-                                },
-                                {
-                                    type: "image_url",
-                                    image_url: {
-                                        url: imageBase64
-                                    }
-                                }
-                            ]
-                        }
-                    ],
-                    max_tokens: 1000,
-                    temperature: 0.3
-                })
-            });
-
-            if (response.status === 429) {
-                throw new Error("Слишком много запросов. Попробуйте позже или используйте свой API ключ");
-            }
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${errorText}`);
-            }
-
-            const data = await response.json();
-            const content = data.choices?.[0]?.message?.content;
-
-            if (!content) {
-                throw new Error("Пустой ответ от модели");
-            }
-
-            let analysis;
-
-            try {
-                analysis = JSON.parse(content);
-            } catch {
-                const cleanedContent = this.extractJSON(content);
-                analysis = JSON.parse(cleanedContent);
-            }
-
-            console.log("✅ Анализ завершён!", analysis);
-            return analysis;
-
-        } catch (error) {
-            console.error("❌ Ошибка анализа:", error);
-            throw error;
-        }
-    }
-
-    extractJSON(content) {
-        let cleaned = content.replace(/^```json\s*/, '');
-        cleaned = cleaned.replace(/^```\s*/, '');
-        cleaned = cleaned.replace(/\s*```$/, '');
-        return cleaned.trim();
+        return analyzeFoodRequest(imageBase64, this.openRouterConfig);
     }
 
     bindEvents() {
@@ -198,8 +77,29 @@ class FoodAnalyzer {
         }
 
         if (this.addPhotoFormPageButtonElement) {
-            this.addPhotoFormPageButtonElement.addEventListener('click', () => {
-                this.showAddPhotoPage();
+            this.addPhotoFormPageButtonElement.addEventListener('click', () => this.showAddPhotoPage());
+        }
+
+        if (this.profileOpenButtonElement) {
+            this.profileOpenButtonElement.addEventListener('click', () => {
+                this.fillProfileForm();
+                this.showProfilePage();
+            });
+        }
+
+        if (this.profileSaveButtonElement) {
+            this.profileSaveButtonElement.addEventListener('click', () => this.saveProfileAndUpdateNorm());
+        }
+
+        if (this.profileCancelButtonElement) {
+            this.profileCancelButtonElement.addEventListener('click', () => this.hideProfilePage());
+        }
+
+        if (this.profilePageElement) {
+            this.profilePageElement.addEventListener('click', (event) => {
+                if (event.target === this.profilePageElement) {
+                    this.hideProfilePage();
+                }
             });
         }
 
@@ -207,9 +107,7 @@ class FoodAnalyzer {
             this.addPhotoInputElement.addEventListener('change', async (e) => {
                 const selectedFile = e.target.files;
 
-                if (!selectedFile || selectedFile.length === 0) {
-                    return;
-                }
+                if (!selectedFile || selectedFile.length === 0) return;
 
                 const [imageFile] = selectedFile;
                 const isImageType = imageFile.type.startsWith('image/');
@@ -264,7 +162,6 @@ class FoodAnalyzer {
 
                     this.hideAddPhotoPage();
                     this.resetAddPhotoPage();
-
                 } catch (error) {
                     console.error('Ошибка:', error);
                     alert('Ошибка при анализе фото: ' + error.message);
@@ -330,13 +227,8 @@ class FoodAnalyzer {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
 
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            };
-
-            fileReader.onerror = (error) => {
-                reject(new Error('Ошибка чтения файла: ' + error));
-            };
+            fileReader.onload = () => resolve(fileReader.result);
+            fileReader.onerror = (error) => reject(new Error('Ошибка чтения файла: ' + error));
 
             fileReader.readAsDataURL(imageFile);
         });
@@ -355,9 +247,9 @@ class FoodAnalyzer {
     }
 
     showAddPhotoPage() {
-    if (this.addPhotoFormPageElement) {
-        this.addPhotoFormPageElement.classList.add('is-active');
-    }
+        if (this.addPhotoFormPageElement) {
+            this.addPhotoFormPageElement.classList.add('is-active');
+        }
     }
 
     hideAddPhotoPage() {
@@ -389,15 +281,53 @@ class FoodAnalyzer {
         }
     }
 
+    showProfilePage() {
+        if (this.profilePageElement) {
+            this.profilePageElement.classList.add('is-active');
+        }
+    }
+
+    hideProfilePage() {
+        if (this.profilePageElement) {
+            this.profilePageElement.classList.remove('is-active');
+        }
+    }
+
+    fillProfileForm() {
+        if (this.profileGenderElement) this.profileGenderElement.value = this.userProfile.gender;
+        if (this.profileAgeElement) this.profileAgeElement.value = this.userProfile.age;
+        if (this.profileHeightElement) this.profileHeightElement.value = this.userProfile.height;
+        if (this.profileWeightElement) this.profileWeightElement.value = this.userProfile.weight;
+    }
+
+    saveProfileAndUpdateNorm() {
+        const gender = this.profileGenderElement?.value;
+        const age = Number(this.profileAgeElement?.value);
+        const height = Number(this.profileHeightElement?.value);
+        const weight = Number(this.profileWeightElement?.value);
+
+        if (!gender || !age || !height || !weight) {
+            alert('Заполните все поля');
+            return;
+        }
+
+        this.userProfile = { gender, age, height, weight };
+        this.dailyNorm = calculateDailyNorm(this.userProfile);
+
+        saveUserProfile(this.userProfile);
+        this.render();
+        this.hideProfilePage();
+    }
+
     addFoodItem(analysis) {
         this.items.push({
             ...analysis,
             date: new Date().toISOString(),
-            id: Date.now() + Math.floor(Math.random() * 1000),
+            id: generateId(),
             isNew: true,
         });
 
-        this.saveToLocalStorage();
+        saveFoodItems(this.items);
         this.render();
     }
 
@@ -409,7 +339,7 @@ class FoodAnalyzer {
 
             setTimeout(() => {
                 this.items = this.items.filter(item => item.id !== id);
-                this.saveToLocalStorage();
+                saveFoodItems(this.items);
                 this.render();
             }, 250);
         }
@@ -417,11 +347,10 @@ class FoodAnalyzer {
 
     deleteAllCards() {
         const isConfirmed = confirm('Are you sure to delete all items?');
-
         if (!isConfirmed) return;
 
         this.items = [];
-        this.saveToLocalStorage();
+        saveFoodItems(this.items);
         this.render();
     }
 
@@ -545,40 +474,5 @@ class FoodAnalyzer {
                 this.foodList.innerHTML = '<li class="food-list__empty">There are no foods</li>';
             }
         }
-
-        if (
-            this.dishesCaloriesElement &&
-            this.dishesProteinsElement &&
-            this.dishesFatsElement &&
-            this.dishesCarbohydratesElement &&
-            this.items.length > 0
-        ) {
-            const lastItem = this.items[this.items.length - 1];
-            this.dishesCaloriesElement.textContent = Math.round(lastItem.calories || 0);
-            this.dishesProteinsElement.textContent = Math.round(lastItem.protein_g || 0);
-            this.dishesFatsElement.textContent = Math.round(lastItem.fat_g || 0);
-            this.dishesCarbohydratesElement.textContent = Math.round(lastItem.carbs_g || 0);
-        }
-    }
-
-    saveToLocalStorage() {
-        localStorage.setItem('foodItems', JSON.stringify(this.items));
-    }
-
-    loadFromLocalStorage() {
-        const saved = localStorage.getItem('foodItems');
-
-        if (saved) {
-            try {
-                this.items = JSON.parse(saved);
-            } catch (e) {
-                console.error('Ошибка загрузки из localStorage:', e);
-                this.items = [];
-            }
-        }
     }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    new FoodAnalyzer();
-});
