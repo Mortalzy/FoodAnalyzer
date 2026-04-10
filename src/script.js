@@ -27,78 +27,97 @@ class FoodAnalyzer {
         progressPercent: '[data-js-progress-percent]',
 
         loader: '[data-js-loader]',
+
+        deleteAllButton: '[data-js-delete-all-button]',
+
+        addPhotoFormPage: '[data-js-add-photo-page]',
+        addPhotoFormPageButton: '[data-js-add-photo-form-page-button]',
+        addPhotoButton: '[data-js-add-photo-button]',
+        uploadedPhoto: '[data-js-uploaded-photo]',
+        photoPlaceholder: '[data-js-photo-placeholder]',
+        addPhotoNote: '[data-js-add-photo-note]',
     }
 
     constructor() {
-        this.statisticsCaloriesEatenElement = document.querySelector(this.selectors.statisticsCaloriesEaten)
-        this.statisticsCaloriesRemainElement = document.querySelector(this.selectors.statisticsCaloriesRemain)
-        this.statisticsCaloriesNormalElement = document.querySelector(this.selectors.statisticsCaloriesNormal)
-        
-        this.statisticsProteinsNowElement = document.querySelector(this.selectors.statisticsProteinsNow)
-        this.statisticsProteinsNormalElement = document.querySelector(this.selectors.statisticsProteinsNormal)
-        
-        this.statisticsFatsNowElement = document.querySelector(this.selectors.statisticsFatsNow)
-        this.statisticsFatsNormalElement = document.querySelector(this.selectors.statisticsFatsNormal)
-        
-        this.statisticsCarbohydratesNowElement = document.querySelector(this.selectors.statisticsCarbohydratesNow)
-        this.statisticsCarbohydratesNormalElement = document.querySelector(this.selectors.statisticsCarbohydratesNormal)
-        
-        this.totalEatenFoodElement = document.querySelector(this.selectors.totalEatenFood)
-        this.foodList = document.querySelector(this.selectors.foodList)
-        
-        this.dishesCaloriesElement = document.querySelector(this.selectors.dishesCalories)
-        this.dishesProteinsElement = document.querySelector(this.selectors.dishesProteins)
-        this.dishesFatsElement = document.querySelector(this.selectors.dishesFats)
-        this.dishesCarbohydratesElement = document.querySelector(this.selectors.dishesCarbohydrates)
+        this.statisticsCaloriesEatenElement = document.querySelector(this.selectors.statisticsCaloriesEaten);
+        this.statisticsCaloriesRemainElement = document.querySelector(this.selectors.statisticsCaloriesRemain);
+        this.statisticsCaloriesNormalElement = document.querySelector(this.selectors.statisticsCaloriesNormal);
 
-        this.addPhotoInputElement = document.querySelector(this.selectors.addPhotoInput)
+        this.statisticsProteinsNowElement = document.querySelector(this.selectors.statisticsProteinsNow);
+        this.statisticsProteinsNormalElement = document.querySelector(this.selectors.statisticsProteinsNormal);
 
-        this.progressRingElement = document.querySelector(this.selectors.progressRing)
-        this.progressPercentElement = document.querySelector(this.selectors.progressPercent)
+        this.statisticsFatsNowElement = document.querySelector(this.selectors.statisticsFatsNow);
+        this.statisticsFatsNormalElement = document.querySelector(this.selectors.statisticsFatsNormal);
 
-        this.loaderElement = document.querySelector(this.selectors.loader)
+        this.statisticsCarbohydratesNowElement = document.querySelector(this.selectors.statisticsCarbohydratesNow);
+        this.statisticsCarbohydratesNormalElement = document.querySelector(this.selectors.statisticsCarbohydratesNormal);
 
-        this.items = []
+        this.totalEatenFoodElement = document.querySelector(this.selectors.totalEatenFood);
+        this.foodList = document.querySelector(this.selectors.foodList);
+
+        this.dishesCaloriesElement = document.querySelector(this.selectors.dishesCalories);
+        this.dishesProteinsElement = document.querySelector(this.selectors.dishesProteins);
+        this.dishesFatsElement = document.querySelector(this.selectors.dishesFats);
+        this.dishesCarbohydratesElement = document.querySelector(this.selectors.dishesCarbohydrates);
+
+        this.addPhotoInputElement = document.querySelector(this.selectors.addPhotoInput);
+
+        this.progressRingElement = document.querySelector(this.selectors.progressRing);
+        this.progressPercentElement = document.querySelector(this.selectors.progressPercent);
+
+        this.loaderElement = document.querySelector(this.selectors.loader);
+        this.deleteAllButtonElement = document.querySelector(this.selectors.deleteAllButton);
+
+        this.addPhotoFormPageElement = document.querySelector(this.selectors.addPhotoFormPage);
+        this.addPhotoFormPageButtonElement = document.querySelector(this.selectors.addPhotoFormPageButton);
+        this.addPhotoButtonElement = document.querySelector(this.selectors.addPhotoButton);
+        this.uploadedPhotoElement = document.querySelector(this.selectors.uploadedPhoto);
+        this.photoPlaceholderElement = document.querySelector(this.selectors.photoPlaceholder);
+        this.addPhotoNoteElement = document.querySelector(this.selectors.addPhotoNote);
+
+        this.selectedImageFile = null;
+        this.selectedImageBase64 = '';
+        this.selectedThumbnail = '';
+
+        this.items = [];
 
         this.dailyNorm = {
             calories: 2000,
             proteins: 100,
             fats: 70,
             carbs: 250,
-        }
+        };
 
-        // OpenRouter конфигурация
         this.openRouterConfig = {
-            apiKey: "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",
+            apiKey: "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",
             baseURL: "https://openrouter.ai/api/v1/chat/completions",
-        }
+        };
 
-        this.loadFromLocalStorage()
-        this.render()
-        this.bindEvents()
-        
-        // Сохраняем ссылку на экземпляр для глобального доступа
+        this.loadFromLocalStorage();
+        this.render();
+        this.bindEvents();
+
         window.foodAnalyzer = this;
     }
 
     async analyzeFood(imageBase64) {
         try {
             console.log("📸 Анализирую фото еды...");
-            
+
             const prompt = `Ты — профессиональный диетолог. Проанализируй это блюдо и верни ТОЛЬКО JSON.
-            (Длина названия блюда не должна превышать 25 символов. Можешь использовать сокращения где это уместно)
-            
-            ВАЖНО: Верни ТОЛЬКО чистый JSON без markdown-разметки, без пояснений, без \`\`\`json.
-            
-            {
-              "dish_name": "название на русском",
-              "weight_g": число (примерный вес порции в граммах),
-              "calories": число (ккал),
-              "protein_g": число (белки),
-              "fat_g": число (жиры),
-              "carbs_g": число (углеводы),
-              "confidence": "high/medium/low"
-            }`;
+(Длина названия блюда не должна превышать 25 символов. Можешь использовать сокращения где это уместно)
+
+ВАЖНО: Верни ТОЛЬКО чистый JSON без markdown-разметки, без пояснений, без \`\`\`json.
+
+{
+  "dish_name": "название на русском",
+  "weight_g": число,
+  "calories": число,
+  "protein_g": число,
+  "fat_g": число,
+  "carbs_g": число,
+  "confidence": "high/medium/low"
+}`;
 
             const response = await fetch(this.openRouterConfig.baseURL, {
                 method: "POST",
@@ -142,29 +161,24 @@ class FoodAnalyzer {
             }
 
             const data = await response.json();
-            console.log(`✅ Модель успешно обработала запрос`);
-            
-            const content = data.choices[0].message.content;
-            
+            const content = data.choices?.[0]?.message?.content;
+
+            if (!content) {
+                throw new Error("Пустой ответ от модели");
+            }
+
             let analysis;
+
             try {
                 analysis = JSON.parse(content);
-            } catch (parseError) {
-                console.log("🔄 Прямой парсинг не удался, пробую очистить от markdown...");
+            } catch {
                 const cleanedContent = this.extractJSON(content);
                 analysis = JSON.parse(cleanedContent);
             }
 
-            console.log("\n✅ Анализ завершён!");
-            console.log("🍽️ Блюдо:", analysis.dish_name);
-            console.log("⚖️ Вес:", analysis.weight_g, "г");
-            console.log("🔥 Калории:", analysis.calories, "ккал");
-            console.log("🥩 Белки:", analysis.protein_g, "г");
-            console.log("🧈 Жиры:", analysis.fat_g, "г"); 
-            console.log("🍚 Углеводы:", analysis.carbs_g, "г");
-            
+            console.log("✅ Анализ завершён!", analysis);
             return analysis;
-            
+
         } catch (error) {
             console.error("❌ Ошибка анализа:", error);
             throw error;
@@ -172,74 +186,115 @@ class FoodAnalyzer {
     }
 
     extractJSON(content) {
-        let cleaned = content.replace(/^```json\n/, '');
-        cleaned = cleaned.replace(/\n```$/, '');
-        cleaned = cleaned.replace(/^```\n/, '');
-        cleaned = cleaned.replace(/\n```$/, '');
-        cleaned = cleaned.trim();
-        return cleaned;
+        let cleaned = content.replace(/^```json\s*/, '');
+        cleaned = cleaned.replace(/^```\s*/, '');
+        cleaned = cleaned.replace(/\s*```$/, '');
+        return cleaned.trim();
     }
 
     bindEvents() {
-        this.addPhotoInputElement.addEventListener('change', async (e) => {
-            const selectedFile = e.target.files;
+        if (this.deleteAllButtonElement) {
+            this.deleteAllButtonElement.addEventListener('click', () => this.deleteAllCards());
+        }
 
-            if(selectedFile.length > 0) {
-                const [imageFile] = selectedFile
-                const isImageType = imageFile.type.startsWith('image')
+        if (this.addPhotoFormPageButtonElement) {
+            this.addPhotoFormPageButtonElement.addEventListener('click', () => {
+                this.showAddPhotoPage();
+            });
+        }
 
-                if(isImageType) {
-                    try {
-                        this.showLoadingIndicator();
-                        
-                        // Получаем полный data URL фото
-                        const imageBase64 = await this.getImage64Buffer(imageFile)
-                        
-                        // Создаем миниатюру для отображения
-                        const thumbnail = await this.createThumbnail(imageFile);
-                        
-                        // Анализируем фото
-                        const analysisResult = await this.analyzeFood(imageBase64)
-                        
-                        // Добавляем результат вместе с миниатюрой
-                        this.addFoodItem({
-                            ...analysisResult,
-                            thumbnail: thumbnail, // Сохраняем миниатюру
-                            fullImage: imageBase64 // Опционально: сохраняем полное фото
-                        });
-                        
-                        this.updateStatistics();
-                        
-                        console.log('Результат анализа:', analysisResult);
-                        
-                    } catch(error) {
-                        console.error('Ошибка:', error)
-                        alert('Ошибка при анализе фото: ' + error.message);
-                    } finally {
-                        this.hideLoadingIndicator();
-                        e.target.value = '';
-                    }
-                } else {
-                    alert('Пожалуйста, выберите изображение');
+        if (this.addPhotoInputElement) {
+            this.addPhotoInputElement.addEventListener('change', async (e) => {
+                const selectedFile = e.target.files;
+
+                if (!selectedFile || selectedFile.length === 0) {
+                    return;
                 }
-            }
-        });
+
+                const [imageFile] = selectedFile;
+                const isImageType = imageFile.type.startsWith('image/');
+
+                if (!isImageType) {
+                    alert('Пожалуйста, выберите изображение');
+                    e.target.value = '';
+                    return;
+                }
+
+                this.selectedImageFile = imageFile;
+
+                const objectUrl = URL.createObjectURL(imageFile);
+
+                if (this.uploadedPhotoElement) {
+                    this.uploadedPhotoElement.src = objectUrl;
+                    this.uploadedPhotoElement.classList.add('is-visible');
+                }
+
+                if (this.photoPlaceholderElement) {
+                    this.photoPlaceholderElement.classList.add('is-hidden');
+                }
+
+                try {
+                    this.selectedImageBase64 = await this.getImage64Buffer(imageFile);
+                    this.selectedThumbnail = await this.createThumbnail(imageFile);
+                } catch (error) {
+                    console.error(error);
+                    alert('Ошибка подготовки изображения');
+                }
+            });
+        }
+
+        if (this.addPhotoButtonElement) {
+            this.addPhotoButtonElement.addEventListener('click', async () => {
+                if (!this.selectedImageFile || !this.selectedImageBase64) {
+                    alert('Сначала выберите фото');
+                    return;
+                }
+
+                try {
+                    this.showLoadingIndicator();
+
+                    const analysisResult = await this.analyzeFood(this.selectedImageBase64);
+
+                    this.addFoodItem({
+                        ...analysisResult,
+                        thumbnail: this.selectedThumbnail,
+                        fullImage: this.selectedImageBase64,
+                        note: this.addPhotoNoteElement ? this.addPhotoNoteElement.value.trim() : ''
+                    });
+
+                    this.hideAddPhotoPage();
+                    this.resetAddPhotoPage();
+
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                    alert('Ошибка при анализе фото: ' + error.message);
+                } finally {
+                    this.hideLoadingIndicator();
+                }
+            });
+        }
+
+        if (this.addPhotoFormPageElement) {
+            this.addPhotoFormPageElement.addEventListener('click', (event) => {
+                if (event.target === this.addPhotoFormPageElement) {
+                    this.hideAddPhotoPage();
+                }
+            });
+        }
     }
-    
-    // Новый метод для создания миниатюры
+
     createThumbnail(imageFile) {
         return new Promise((resolve, reject) => {
             const img = new Image();
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            
+            const objectUrl = URL.createObjectURL(imageFile);
+
             img.onload = () => {
-                // Устанавливаем размер миниатюры (например, 80x80 пикселей)
                 const maxSize = 80;
                 let width = img.width;
                 let height = img.height;
-                
-                // Сохраняем пропорции
+
                 if (width > height) {
                     if (width > maxSize) {
                         height *= maxSize / width;
@@ -251,48 +306,47 @@ class FoodAnalyzer {
                         height = maxSize;
                     }
                 }
-                
+
                 canvas.width = width;
                 canvas.height = height;
-                
-                // Рисуем изображение на canvas
+
                 ctx.drawImage(img, 0, 0, width, height);
-                
-                // Получаем data URL миниатюры
-                const thumbnailDataUrl = canvas.toDataURL('image/jpeg', 0.7); // Качество 70%
+
+                const thumbnailDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                URL.revokeObjectURL(objectUrl);
                 resolve(thumbnailDataUrl);
             };
-            
+
             img.onerror = () => {
+                URL.revokeObjectURL(objectUrl);
                 reject(new Error('Ошибка при создании миниатюры'));
             };
-            
-            // Загружаем изображение
-            img.src = URL.createObjectURL(imageFile);
+
+            img.src = objectUrl;
         });
     }
-    
+
     getImage64Buffer(imageFile) {
         return new Promise((resolve, reject) => {
-            const fileReader = new FileReader()
+            const fileReader = new FileReader();
 
             fileReader.onload = () => {
-                resolve(fileReader.result)
-            }
-            
+                resolve(fileReader.result);
+            };
+
             fileReader.onerror = (error) => {
-                reject(new Error('Ошибка чтения файла: ' + error))
-            }
-            
-            fileReader.readAsDataURL(imageFile)
-        })
+                reject(new Error('Ошибка чтения файла: ' + error));
+            };
+
+            fileReader.readAsDataURL(imageFile);
+        });
     }
 
     showLoadingIndicator() {
-    if (this.loaderElement) {
-        this.loaderElement.style.display = 'flex';
+        if (this.loaderElement) {
+            this.loaderElement.style.display = 'flex';
         }
-    }   
+    }
 
     hideLoadingIndicator() {
         if (this.loaderElement) {
@@ -300,30 +354,76 @@ class FoodAnalyzer {
         }
     }
 
+    showAddPhotoPage() {
+    if (this.addPhotoFormPageElement) {
+        this.addPhotoFormPageElement.classList.add('is-active');
+    }
+    }
+
+    hideAddPhotoPage() {
+        if (this.addPhotoFormPageElement) {
+            this.addPhotoFormPageElement.classList.remove('is-active');
+        }
+    }
+
+    resetAddPhotoPage() {
+        this.selectedImageFile = null;
+        this.selectedImageBase64 = '';
+        this.selectedThumbnail = '';
+
+        if (this.addPhotoInputElement) {
+            this.addPhotoInputElement.value = '';
+        }
+
+        if (this.addPhotoNoteElement) {
+            this.addPhotoNoteElement.value = '';
+        }
+
+        if (this.uploadedPhotoElement) {
+            this.uploadedPhotoElement.src = '';
+            this.uploadedPhotoElement.classList.remove('is-visible');
+        }
+
+        if (this.photoPlaceholderElement) {
+            this.photoPlaceholderElement.classList.remove('is-hidden');
+        }
+    }
+
     addFoodItem(analysis) {
         this.items.push({
             ...analysis,
             date: new Date().toISOString(),
-            id: Date.now(),
+            id: Date.now() + Math.floor(Math.random() * 1000),
             isNew: true,
         });
+
         this.saveToLocalStorage();
         this.render();
     }
 
     deleteItem(id) {
-    const element = document.querySelector(`[data-id="${id}"]`);
-    
-    if (element) {
-        element.classList.add('food-list__item--removing');
+        const element = document.querySelector(`[data-id="${id}"]`);
 
-        setTimeout(() => {
-            this.items = this.items.filter(item => item.id !== id);
-            this.saveToLocalStorage();
-            this.render();
-        }, 250); // должно совпадать с CSS
+        if (element) {
+            element.classList.add('food-list__item--removing');
+
+            setTimeout(() => {
+                this.items = this.items.filter(item => item.id !== id);
+                this.saveToLocalStorage();
+                this.render();
+            }, 250);
+        }
     }
-}
+
+    deleteAllCards() {
+        const isConfirmed = confirm('Are you sure to delete all items?');
+
+        if (!isConfirmed) return;
+
+        this.items = [];
+        this.saveToLocalStorage();
+        this.render();
+    }
 
     updateProgressRing(eatenCalories) {
         if (!this.progressRingElement || !this.progressPercentElement) return;
@@ -336,7 +436,6 @@ class FoodAnalyzer {
 
         this.progressRingElement.style.strokeDasharray = circumference;
         this.progressRingElement.style.strokeDashoffset = circumference * (1 - progress);
-
         this.progressPercentElement.textContent = `${percent}%`;
 
         if (progress < 0.5) {
@@ -346,7 +445,7 @@ class FoodAnalyzer {
         } else {
             this.progressRingElement.style.stroke = '#fca590';
         }
-}
+    }
 
     updateStatistics() {
         const totals = this.items.reduce((acc, item) => {
@@ -360,12 +459,12 @@ class FoodAnalyzer {
         if (this.statisticsCaloriesEatenElement) {
             this.statisticsCaloriesEatenElement.textContent = Math.round(totals.calories);
         }
-        
+
         if (this.statisticsCaloriesRemainElement) {
             const remain = this.dailyNorm.calories - totals.calories;
             this.statisticsCaloriesRemainElement.textContent = Math.max(0, Math.round(remain));
         }
-        
+
         if (this.statisticsCaloriesNormalElement) {
             this.statisticsCaloriesNormalElement.textContent = this.dailyNorm.calories;
         }
@@ -373,6 +472,7 @@ class FoodAnalyzer {
         if (this.statisticsProteinsNowElement) {
             this.statisticsProteinsNowElement.textContent = Math.round(totals.proteins);
         }
+
         if (this.statisticsProteinsNormalElement) {
             this.statisticsProteinsNormalElement.textContent = this.dailyNorm.proteins;
         }
@@ -380,6 +480,7 @@ class FoodAnalyzer {
         if (this.statisticsFatsNowElement) {
             this.statisticsFatsNowElement.textContent = Math.round(totals.fats);
         }
+
         if (this.statisticsFatsNormalElement) {
             this.statisticsFatsNormalElement.textContent = this.dailyNorm.fats;
         }
@@ -387,6 +488,7 @@ class FoodAnalyzer {
         if (this.statisticsCarbohydratesNowElement) {
             this.statisticsCarbohydratesNowElement.textContent = Math.round(totals.carbs);
         }
+
         if (this.statisticsCarbohydratesNormalElement) {
             this.statisticsCarbohydratesNormalElement.textContent = this.dailyNorm.carbs;
         }
@@ -397,49 +499,60 @@ class FoodAnalyzer {
     render() {
         this.updateStatistics();
 
-        this.totalEatenFoodElement.textContent = this.items.length
-        
+        if (this.totalEatenFoodElement) {
+            this.totalEatenFoodElement.textContent = this.items.length;
+        }
+
         if (this.foodList) {
             if (this.items.length > 0) {
                 const sorted = [...this.items].reverse();
-                
+
                 const itemsHTML = sorted.map(item => {
-                    // Используем миниатюру, если она есть, иначе заглушку
-                    const photoHTML = item.thumbnail 
+                    const photoHTML = item.thumbnail
                         ? `<img class="food-card__photo-img" src="${item.thumbnail}" alt="${item.dish_name}">`
                         : '<div class="food-card__photo-placeholder">📸</div>';
-                    
+
                     return `
-                    <li class="food-list__item ${item.isNew ? 'food-list__item--new' : ''}" data-id="${item.id}">
-                        <article class="food-card">
-                            <div class="food-card__photo">
-                                ${photoHTML}
-                            </div>
-                            <div class="food-card__content">
-                                <div class="food-card__description">
-                                    <p class="food-card__title">${item.dish_name || 'Блюдо'}</p>
-                                    <p class="food-card__calories">~<span class="food-card__calories-value">${Math.round(item.calories || 0)}</span> ккал</p>
-                                    <div class="food-card__PFC">
-                                        <p class="food-card__proteins"><span class="food-card__proteins-value">${Math.round(item.protein_g || 0)}</span> б</p>
-                                        <p class="food-card__fats"><span class="food-card__fats-value">${Math.round(item.fat_g || 0)}</span> ж</p>
-                                        <p class="food-card__carbohydrates"><span class="food-card__carbohydrates-value">${Math.round(item.carbs_g || 0)}</span> у</p>
+                        <li class="food-list__item ${item.isNew ? 'food-list__item--new' : ''}" data-id="${item.id}">
+                            <article class="food-card">
+                                <div class="food-card__photo">
+                                    ${photoHTML}
+                                </div>
+
+                                <div class="food-card__content">
+                                    <div class="food-card__description">
+                                        <p class="food-card__title">${item.dish_name || 'Блюдо'}</p>
+                                        <p class="food-card__calories">~<span class="food-card__calories-value">${Math.round(item.calories || 0)}</span> ккал</p>
+
+                                        <div class="food-card__PFC">
+                                            <p class="food-card__proteins"><span class="food-card__proteins-value">${Math.round(item.protein_g || 0)}</span> б</p>
+                                            <p class="food-card__fats"><span class="food-card__fats-value">${Math.round(item.fat_g || 0)}</span> ж</p>
+                                            <p class="food-card__carbohydrates"><span class="food-card__carbohydrates-value">${Math.round(item.carbs_g || 0)}</span> у</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <button class="food-card__button-delete" onclick="foodAnalyzer.deleteItem(${item.id})">
-                                <img class="food-card__delete-img" src="assets/png-icons/delete-card__icon.svg" alt="delete-card__icon">
-                            </button>
-                        </article>
-                    </li>
-                `}).join('');
-                
+
+                                <button class="food-card__button-delete" onclick="foodAnalyzer.deleteItem(${item.id})" type="button">
+                                    <img class="food-card__delete-img" src="assets/png-icons/delete-card__icon.svg" alt="delete-card__icon">
+                                </button>
+                            </article>
+                        </li>
+                    `;
+                }).join('');
+
                 this.foodList.innerHTML = itemsHTML;
             } else {
-                this.foodList.innerHTML = '<li class="food-list__empty">Пока нет добавленных блюд</li>';
+                this.foodList.innerHTML = '<li class="food-list__empty">There are no foods</li>';
             }
         }
-        
-        if (this.dishesCaloriesElement && this.items.length > 0) {
+
+        if (
+            this.dishesCaloriesElement &&
+            this.dishesProteinsElement &&
+            this.dishesFatsElement &&
+            this.dishesCarbohydratesElement &&
+            this.items.length > 0
+        ) {
             const lastItem = this.items[this.items.length - 1];
             this.dishesCaloriesElement.textContent = Math.round(lastItem.calories || 0);
             this.dishesProteinsElement.textContent = Math.round(lastItem.protein_g || 0);
@@ -454,6 +567,7 @@ class FoodAnalyzer {
 
     loadFromLocalStorage() {
         const saved = localStorage.getItem('foodItems');
+
         if (saved) {
             try {
                 this.items = JSON.parse(saved);
@@ -465,7 +579,6 @@ class FoodAnalyzer {
     }
 }
 
-// Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     new FoodAnalyzer();
 });

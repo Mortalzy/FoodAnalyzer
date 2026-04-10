@@ -35,21 +35,20 @@
     align-items: center;
 }
 
-.navigation-menu__add-photo-image {
-    width: 24px;
-    height: 24px;
-}
-
 .navigation-menu__user {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.add-photo__label {
+.statistic-button__image,
+.add-photo__image,
+.navigation-menu__user-image {
     cursor: pointer;
 }
 
-.add-photo__input {
-    display: none;
+.navigation-button {
+    border: none;
+    background: transparent;
 }
+

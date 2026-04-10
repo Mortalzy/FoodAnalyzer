@@ -39,7 +39,8 @@
                     <div class="calories-progress__content">
                         <p class="calories-progress__percent" data-js-progress-percent>0%</p>
                         <p class="calories__value">
-                            <span data-js-statistics-calories-remain>2000</span> ккал
+                            <span data-js-statistics-calories-remain>2000</span> 
+                            Kcal
                         </p>
                     </div>
                 </div>
@@ -63,7 +64,7 @@
 
         <section class="cards-section">
             <div class="main-info">
-                <p class="main-info__title">Your food-cards</p>
+                <button class="delete-items__button" data-js-delete-all-button>Delete All</button>
                 <div class="total__dishes">
                     <p>Eaten dishes: <span data-js-total-eaten-foods>0</span></p>
                 </div>
@@ -74,31 +75,49 @@
         <section class="navigation">
             <nav class="navigation-menu">
                 <div class="navigation-menu__statistic navigation-menu__element">
-                    <img class="statistic-button__image" 
-                    src="assets/png-icons/nav-menu__stats.svg" 
-                    alt="statistic-button">
+                    <button class="navigation-button">
+                        <img
+                        class="statistic-button__image"
+                        src="assets/png-icons/nav-menu__stats.svg" 
+                        alt="statistic-button">
+                        </img>
+                    </button>
+                    
                 </div>
 
                 <div class="navigation-menu__add-photo navigation-menu__element">
-                    <label for="file" class="add-photo__label">
-                        <input 
-                        type="file" 
-                        id="file" 
-                        accept="image/*"
-                        class="add-photo__input"
-                        data-js-add-photo-input>
+                    <!-- <label for="file" class="add-photo__image">
+                            <input 
+                            type="file" 
+                            id="file" 
+                            accept="image/*"
+                            class="add-photo__input"
+                            data-js-add-photo-input>
 
-                        <img class="navigation-menu__add-photo-image navigation-menu__element" 
+                        
+                    </label> -->
+                    <button
+                    class="navigation-button"
+                    data-js-add-photo-form-page-button
+                    >
+                        <img 
+                        class="add-photo-button__image" 
                         src="assets/png-icons/nav-menu__add-photo.svg" 
                         alt="add-photo-image">
-                    </label>
+                        </img>
+                    </button>
+                    
                     
                 </div>
 
                 <div class="navigation-menu__user navigation-menu__element">
-                    <img class="navigation-menu__user-image" 
-                    src="assets/png-icons/nav-menu__user.svg" 
-                    alt="user-image"></img>
+                    <a href="https://github.com/Mortalzy" target="_blank">
+                        <img class="user-button__image" 
+                        src="assets/png-icons/nav-menu__user.svg" 
+                        alt="user-image">
+                        </img>
+                    </a>
+                    
                 </div>
             </nav>
         </section>
@@ -107,10 +126,57 @@
             <div class="food-analyzer-loader__spinner"></div>
             <div class="food-analyzer-loader__text">Анализируем фото...</div>
         </div>
+
+        <div class="add-photo-page" data-js-add-photo-page>
+            <div class="add-photo-page__card">
+                <div class="add-photo-page__preview">
+                    <img
+                        class="add-photo-page__uploaded-photo"
+                        src=""
+                        alt="Загруженное фото"
+                        data-js-uploaded-photo
+                    >
+                    <div class="add-photo-page__placeholder" data-js-photo-placeholder>
+                        <span class="add-photo-page__placeholder-icon">📷</span>
+                        <p class="add-photo-page__placeholder-text">Фото ещё не выбрано</p>
+                    </div>
+                </div>
+
+                <div class="add-photo-page__controls">
+                    <label class="add-photo-page__upload-button">
+                        <input
+                            class="add-photo-page__file-input"
+                            type="file"
+                            accept="image/*"
+                            data-js-add-photo-input
+                        >
+                        Выбрать фото
+                    </label>
+
+                    <div class="add-photo-page__field">
+                        <p class="add-photo-page__title">Дополнительная информация</p>
+                        <input
+                            class="add-photo-page__input"
+                            type="text"
+                            placeholder="Например: без сахара, домашнее блюдо, большой размер порции"
+                            data-js-add-photo-note
+                        >
+                    </div>
+
+                    <button class="add-photo-page__action-button" type="button" data-js-add-photo-button>
+                        Добавить фото
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        
+
     </div>
 </div>
 
-    
+
+
 
     <script type="module" src="script.js" defer></script>
 </body>

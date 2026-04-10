@@ -14,6 +14,12 @@
     }
 }
 
+.food-list__empty {
+    margin: 0 auto;
+    font-size: 24px;
+    color: white
+}
+
 .food-card {
     display: grid;
     align-items: center;

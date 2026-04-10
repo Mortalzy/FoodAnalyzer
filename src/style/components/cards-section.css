@@ -38,8 +38,16 @@
     justify-content: space-between;
 }
 
-.main-info__title {
+.delete-items__button {
+    border: none;
+    background: transparent;
     color: var(--color-white);
+    font-size: 18px;
+    transition: all 0.3s;
+
+    &:hover {
+        transform: scale(1.1);
+    }
 }
 
 .total__dishes {
@@ -47,4 +55,3 @@
     border-radius: var(--border-radius);
     padding: 5px 10px;
 }
-
